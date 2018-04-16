@@ -125,12 +125,12 @@ def test_model(model, X, y):
     test_results = np.vstack((y, y_pred)).T
     return test_results
 
-def train_model (X_train_std,y_train):
+def train_model (X, y):
     """Train the model """
     
     from sklearn.linear_model import LogisticRegression
     model = LogisticRegression(C=100,random_state=0)
-    model.fit(X_train_std,y_train)
+    model.fit(X, y)
     return model
 
 ###### Main code #######
