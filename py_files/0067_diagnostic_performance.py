@@ -115,7 +115,7 @@ def split_data (data_set, split=0.25):
     X=data_set.data
     y=data_set.target
     X_train,X_test,y_train,y_test=train_test_split(
-        X,y,test_size=0.25, random_state=0)
+        X,y,test_size=split, random_state=0)
     return X_train,X_test,y_train,y_test
 
 def test_model(model, X, y):
