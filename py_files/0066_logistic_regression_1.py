@@ -4,14 +4,11 @@ from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+from sklearn.linear_model import LogisticRegression
 
 # Load Dataset
 
 data_set = datasets.load_breast_cancer()
-
-# Alternatively you could look at the iris data set:
-# data_set = datasets.load_iris()
-
 X=data_set.data
 y=data_set.target
 
@@ -42,13 +39,17 @@ from sklearn.linear_model import LogisticRegression
 lr=LogisticRegression(C=100,random_state=0)
 lr.fit(X_train_std,y_train)
 
-# Test
+# Predict results for test set
+
 y_pred=lr.predict(X_test_std)
+
+# Calculate accuracy
+
 correct = (y_test == y_pred).sum()
 incorrect = (y_test != y_pred).sum()
 accuracy = correct / (correct + incorrect) * 100
 
-print('\nPercent Accuracy: %0.1f' %accuracy) 
+print('\nPercent Accuracy: %0.1f' %accuracy)
 
 # Show more detailed results
 
@@ -59,3 +60,6 @@ prediction['correct'] = prediction['actual'] == prediction['predicted']
 
 print ('\nDetailed results for first 20 tests:')
 print (prediction.head(20))
+
+
+# There we have our first machine learning model!
