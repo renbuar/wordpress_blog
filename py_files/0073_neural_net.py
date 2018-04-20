@@ -1,3 +1,17 @@
+
+# coding: utf-8
+
+# # Neural networks
+# 
+# The last of our machine learning methods that we will look at in this introduction is neural networks.
+# 
+# Neural networks power much of modern image and voice recongition. They can cope with highly complex data, but often take large amounts of data to train well. There are many parameters that can be changes, so fine-tuning a neural net can require extensive work. We will not go into all the ways they may be fine-tuned here, but just look at a simple example.
+# 
+# Once again we will re-use our logistic regression model, and replace the model training function with one based on neural networks. Hopefully you now have got the idea that once you set up your machine learning model it is easy to try different machine learning methods in scikit-learn.
+
+# In[1]:
+
+
 # import required modules
 
 from sklearn import datasets
@@ -158,3 +172,4 @@ performance = calculate_diagnostic_performance(test_results)
 
 # Print performance metrics
 print_diagnostic_results(performance)
+

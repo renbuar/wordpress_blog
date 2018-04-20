@@ -1,3 +1,15 @@
+
+# coding: utf-8
+
+# # Regularisation
+# 
+# Many machine learning techniques include an option to fine-tune regularisation. Regularisation helps to avoid over-fitting of the moedl to the training set at the cost of accuracy of predicition for previously unseen samples in the test set. In the logistic regression method that we have bene looking at the regularisation term in the model fit is 'c'. The lower the c value the greater the regularisation. The previous code has been amended below to loop through a series of c values. For each value of c the model fit is run 100 times with different random train/test splits, and the average results are presented.
+# 
+# Note that as c increases (that is regularisation is reduced) the accuracy of fitting the training set increases until it reaches a plateau. With the test set of data, increasing c first improves accuracy but then, above a certain point, accuracy starts to drop. When the model is effectively un-regularised (very high c) we have ~95% accuracy in the test set. By fine-tuning c we can improve accuracy of the test set to ~98%.
+
+# In[1]:
+
+
 # import required modules
 
 from sklearn import datasets
@@ -6,6 +18,8 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+get_ipython().run_line_magic('matplotlib', 'inline')
 
 def calculate_diagnostic_performance (actual_predicted):
     """ Calculate diagnostic performance.
@@ -201,5 +215,7 @@ results['test_accuracy'] = test_accuracy
 summary = results.groupby('c').median()
 summary['c'] = list(summary.index)
 
+print ()
 print (summary)
 chart_results (summary)
+

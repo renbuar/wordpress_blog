@@ -1,23 +1,17 @@
 
 # coding: utf-8
 
-# # Support Vector Machines (SVMs)
+# # Learning rates: How much data do you need?
 # 
-# So far we have used logistic regression to create our machine learning model. We will now cover some alternative methods, starting with Support Vector Machines. We can keep nearly of our code. In fact we only have to change the three lines in the 'train mode' function.
+# Do you have enough data samples to build a good machine learning model? Examining the learning rate of your model will help you decide whether it could be improved by having more data.
 # 
-# We'll re-use the logistic regression code for looking for appropriate regularisation of the model (to avoid over-fitting of the model to the training data). Our three lines of code which define the model are now:
+# Here we repeat the logistic regression model on the Wisconsin Breast Cancer Diagnostic data set. We set out regularisation parameter (c) to 1, from our previous experiment, and then look at the effect of restricting our training set to varying sizes (the test set remains the same size, at 25% of our data).
 # 
-#     from sklearn.svm import SVC
-#     model=SVC(kernel='linear',C=c)
-#     model.fit(X_train_std,y_train)
-#     
-# (C is the regularisation term which we will vary in order to find the optimum).
+# We can see that as we increase our training set size the accuracy of fitting the training set reduces (it is easier to over-fit smaller data sets), and increase the accuracy of the test set. When we reach the most data we have there has not yet been a plateau in the accuracy of our test set, and the test set accuracy is significantly poorer than the training set accuracy (at out optimum regularisation for this amount of data). These two observations suggest that we would benefit from having more data for the model. If we did have more data then we should the experiment to find the optimum regularisation: generally as data set size increases, the need for regularisation reduces.
 # 
-# SVMs can use a variety of methods to fit. Two common methods are linear (as used here) where data may be separated and classified by a series of intersecting lines, and rbf (radial basis function) where data is classified according to similarity to existing data points/clusters. We'll just stick with the linear kernal in this example, but when using svm you may wish to try alternative kernals: polynomial, rbf, sigmoid.
-# 
-# For more background on SVMs see: https://en.wikipedia.org/wiki/Support_vector_machine
+# Different types of machine learning model may have different learning rates. This may influence your choice of model.
 
-# In[6]:
+# In[5]:
 
 
 # import required modules
@@ -30,16 +24,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def calculate_diagnostic_performance (actual_predicted):
-    """ We will calculated only accuracy in this model """
+    """Here we truncate calulcation of results just to accuracy measurement"""
     
-    performance ={}
-    test_correct = actual_predicted[:, 0] == actual_predicted[:, 1]
-    performance['accuracy'] = np.average(test_correct)
+    # Calculate results
 
+    test_correct = actual_predicted[:, 0] == actual_predicted[:, 1]
+    accuracy = np.average(test_correct)
+    
+    # Add results to dictionary
+    performance = {}
+    performance['accuracy'] = accuracy
     return performance
 
 def chart_results(results):
-    x = results['c']
+    x = results['n']
     y1 = results['training_accuracy']
     y2 = results['test_accuracy']
     
@@ -48,14 +46,11 @@ def chart_results(results):
     ax = fig.add_subplot(111)
     ax.plot(x,y1, color='k',linestyle='solid', label = 'Training set')
     ax.plot(x,y2, color='b',linestyle='dashed', label = 'Test set')    
-    ax.set_xscale('log')
-    ax.set_xlabel('Regularisation (c)')
+    ax.set_xlabel('training set size (cases)')
     ax.set_ylabel('Accuracy')
-    plt.title('Effect of regularisation on model accuracy')
+    plt.title('Effect of training set size on model accuracy')
     plt.legend()
     plt.show()
-
-
 
 def load_data ():
     """Load the data set. Here we load the Breast Cancer Wisconsin (Diagnostic)
@@ -93,7 +88,7 @@ def print_diagnostic_results (performance):
         print (key,'= %0.3f' %value) # print 3 decimal places
     return
 
-def split_data (data_set, split=0.25):
+def split_data (data_set, split, n):
     """Extract X and y data from data_set object, and split into tarining and
     test data. Split defaults to 75% training, 25% test if not other value 
     passed to function"""
@@ -102,6 +97,8 @@ def split_data (data_set, split=0.25):
     y=data_set.target
     X_train,X_test,y_train,y_test=train_test_split(
         X,y,test_size=split)
+    X_train = X_train[0:n]
+    y_train = y_train[0:n]
     return X_train,X_test,y_train,y_test
 
 def test_model(model, X, y):
@@ -111,12 +108,12 @@ def test_model(model, X, y):
     test_results = np.vstack((y, y_pred)).T
     return test_results
 
-def train_model (X, y, c):
+def train_model (X, y):
     """Train the model """
     
-    from sklearn.svm import SVC
-    model=SVC(kernel='rbf',C=c)
-    model.fit(X_train_std,y_train)
+    from sklearn.linear_model import LogisticRegression
+    model = LogisticRegression(C=1000)
+    model.fit(X, y)
     return model
 
 ###### Main code #######
@@ -124,28 +121,28 @@ def train_model (X, y, c):
 # Load data
 data_set = load_data()
 
-
-
 # List of regularisation values
-c_list = [0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000]
+number_of_training_points = range(25, 450, 25)
+
+# Set up empty lists to record results
 training_accuracy = []
 test_accuracy = []
-c_results = [] # record c
+n_results = [] # record c
 
-for c in c_list:
-
-    for i in range(1000): # repeat model for better estimation of optimal C
+for n in number_of_training_points:
+    # Repeat ml model/prediction 1000 times for each different number of runs
+    for i in range(1000):
         
-        # Split data into trainign and test sets
-        X_train,X_test,y_train,y_test = split_data(data_set, 0.25)
+        # Split data into training and test sets
+        X_train,X_test,y_train,y_test = split_data(data_set, 0.25, n)
 
         # Normalise data
         X_train_std, X_test_std = normalise(X_train,X_test)
         # Repeat test 1000x per level of c
-        c_results.append(c)
+        n_results.append(n)
         
         # Train model
-        model = train_model(X_train_std,y_train, c)
+        model = train_model(X_train_std,y_train)
 
         # Produce results for training set
         test_results = test_model(model, X_train_std, y_train)
@@ -158,14 +155,12 @@ for c in c_list:
         test_accuracy.append(performance['accuracy'])
 
 results = pd.DataFrame()
-results['c'] = c_results
+results['n'] = n_results
 results['training_accuracy'] = training_accuracy
 results['test_accuracy'] = test_accuracy
-summary = results.groupby('c').median()
-summary['c'] = list(summary.index)
+summary = results.groupby('n').median()
+summary['n'] = list(summary.index)
 
 print (summary)
 chart_results (summary)
 
-
-# So, we get about 97% accuracy with regularisation (C) of about 1, though we do not see such a pronounced peak as we did with the polynomial regression. As with logistic regression we may wish also to look at learning rate to understand whether out model accuracy is being signficantly hampered by lack of data.

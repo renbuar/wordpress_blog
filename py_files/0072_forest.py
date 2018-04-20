@@ -1,3 +1,25 @@
+
+# coding: utf-8
+
+# # Random forests
+# 
+# Random forest is a versatile machine learning method based on decision trees. One useful feature of random forests is that it is easy to obtain the relative importance of features. This may be used to help better understand what drives classification, and may also be used to reduce the feature set used with minimal reduction in accuracy. 
+# 
+# Once again we will re-use our logistic regression model, and replace the model function wit the following three lines:
+# 
+#     from sklearn.ensemble import RandomForestClassifier
+#     model = RandomForestClassifier(n_estimators=10000,
+#                                 random_state=0,
+#                                 n_jobs=-1)
+#     model.fit (X,y)
+# 
+# We will also add a function to print out relative importance of features. These are obtained using <em>model.feature_importances_</em>.
+# 
+# Unlike many other methods, random forests do not need data to be normalised (though it won't cause any problems if you do).
+
+# In[13]:
+
+
 # import required modules
 
 from sklearn import datasets
