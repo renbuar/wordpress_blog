@@ -1,0 +1,592 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{0075\_k\_fold}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{Choosing between models with stratified k-fold
+validation}\label{choosing-between-models-with-stratified-k-fold-validation}
+
+In previous example we have used multiple random sampling in order to
+obtain a better measurement of accuracy for modes (repeating the model
+with different random training/test splits).
+
+A more robust method is to use 'stratified k-fold validation'. In this
+method the model is repeated k times, so that all the data is used once,
+but only once, as part of the test set. This, alone, is k-fold
+validation. Stratified k-fold validation adds an extra level of
+robustness by ensuring that in each of the k training/test splits, the
+balance of outcomes represents the balance of outcomes in the overall
+data set. Most commonly 10 different splits of the data are used.
+
+In this example we shall load up some data on treatment of acute stroke
+(data will be loaded from the internet). The model will try to predict
+whether patients are treated with a clot-busting drug. We will compare a
+number of different models using straified k-fold validation.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Techniques applied:}
+         \PY{l+s+sd}{    1. Random Forests}
+         \PY{l+s+sd}{    2. Support Vector Machine (linear and rbf kernel)}
+         \PY{l+s+sd}{    3. Logistic Regression}
+         \PY{l+s+sd}{    4. Neural Network}
+         \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Load modules}
+         
+         \PY{k+kn}{import} \PY{n+nn}{os}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{StandardScaler}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{ensemble} \PY{k}{import} \PY{n}{RandomForestClassifier}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{svm} \PY{k}{import} \PY{n}{SVC}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{LogisticRegression}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{neural\PYZus{}network} \PY{k}{import} \PY{n}{MLPClassifier}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k}{import} \PY{n}{datasets}
+         \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{StratifiedKFold}
+         
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Function to calculate sensitivity ans specificty}
+         \PY{k}{def} \PY{n+nf}{calculate\PYZus{}diagnostic\PYZus{}performance}\PY{p}{(}\PY{n}{actual\PYZus{}predicted}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{} Calculate sensitivty and specificty.}
+         \PY{l+s+sd}{    Takes a Numpy array of 1 and zero, two columns: actual and predicted}
+         \PY{l+s+sd}{    Returns a tuple of results:}
+         \PY{l+s+sd}{    1) accuracy: proportion of test results that are correct    }
+         \PY{l+s+sd}{    2) sensitivity: proportion of true +ve identified}
+         \PY{l+s+sd}{    3) specificity: proportion of true \PYZhy{}ve identified}
+         \PY{l+s+sd}{    4) positive likelihood: increased probability of true +ve if test +ve}
+         \PY{l+s+sd}{    5) negative likelihood: reduced probability of true +ve if test \PYZhy{}ve}
+         \PY{l+s+sd}{    6) false positive rate: proportion of false +ves in true \PYZhy{}ve patients}
+         \PY{l+s+sd}{    7) false negative rate:  proportion of false \PYZhy{}ves in true +ve patients}
+         \PY{l+s+sd}{    8) positive predictive value: chance of true +ve if test +ve}
+         \PY{l+s+sd}{    9) negative predictive value: chance of true \PYZhy{}ve if test \PYZhy{}ve}
+         \PY{l+s+sd}{    10) Count of test positives}
+         
+         \PY{l+s+sd}{    *false positive rate is the percentage of healthy individuals who }
+         \PY{l+s+sd}{    incorrectly receive a positive test result}
+         \PY{l+s+sd}{    * alse neagtive rate is the percentage of diseased individuals who }
+         \PY{l+s+sd}{    incorrectly receive a negative test result}
+         \PY{l+s+sd}{    }
+         \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+             \PY{n}{actual\PYZus{}predicted} \PY{o}{=} \PY{n}{test\PYZus{}results}\PY{o}{.}\PY{n}{values}
+             \PY{n}{actual\PYZus{}positives} \PY{o}{=} \PY{n}{actual\PYZus{}predicted}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}
+             \PY{n}{actual\PYZus{}negatives} \PY{o}{=} \PY{n}{actual\PYZus{}predicted}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}
+             \PY{n}{test\PYZus{}positives} \PY{o}{=} \PY{n}{actual\PYZus{}predicted}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}
+             \PY{n}{test\PYZus{}negatives} \PY{o}{=} \PY{n}{actual\PYZus{}predicted}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}
+             \PY{n}{test\PYZus{}correct} \PY{o}{=} \PY{n}{actual\PYZus{}predicted}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{==} \PY{n}{actual\PYZus{}predicted}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+             \PY{n}{accuracy} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{average}\PY{p}{(}\PY{n}{test\PYZus{}correct}\PY{p}{)}
+             \PY{n}{true\PYZus{}positives} \PY{o}{=} \PY{n}{actual\PYZus{}positives} \PY{o}{\PYZam{}} \PY{n}{test\PYZus{}positives}
+             \PY{n}{true\PYZus{}negatives} \PY{o}{=} \PY{n}{actual\PYZus{}negatives} \PY{o}{\PYZam{}} \PY{n}{test\PYZus{}negatives}
+             \PY{n}{sensitivity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}positives}\PY{p}{)} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{actual\PYZus{}positives}\PY{p}{)}
+             \PY{n}{specificity} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}negatives}\PY{p}{)} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{actual\PYZus{}negatives}\PY{p}{)}
+             \PY{n}{positive\PYZus{}likelihood} \PY{o}{=} \PY{n}{sensitivity} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{specificity}\PY{p}{)}
+             \PY{n}{negative\PYZus{}likelihood} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{sensitivity}\PY{p}{)} \PY{o}{/} \PY{n}{specificity}
+             \PY{n}{false\PYZus{}postive\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{specificity}
+             \PY{n}{false\PYZus{}negative\PYZus{}rate} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{sensitivity}
+             \PY{n}{positive\PYZus{}predictive\PYZus{}value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}positives}\PY{p}{)} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{test\PYZus{}positives}\PY{p}{)}
+             \PY{n}{negative\PYZus{}predicitive\PYZus{}value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{true\PYZus{}negatives}\PY{p}{)} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{test\PYZus{}negatives}\PY{p}{)}
+             \PY{n}{positive\PYZus{}rate} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{actual\PYZus{}predicted}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+             \PY{k}{return} \PY{p}{(}\PY{n}{accuracy}\PY{p}{,} \PY{n}{sensitivity}\PY{p}{,} \PY{n}{specificity}\PY{p}{,} \PY{n}{positive\PYZus{}likelihood}\PY{p}{,}
+                     \PY{n}{negative\PYZus{}likelihood}\PY{p}{,} \PY{n}{false\PYZus{}postive\PYZus{}rate}\PY{p}{,} \PY{n}{false\PYZus{}negative\PYZus{}rate}\PY{p}{,}
+                     \PY{n}{positive\PYZus{}predictive\PYZus{}value}\PY{p}{,} \PY{n}{negative\PYZus{}predicitive\PYZus{}value}\PY{p}{,} 
+                     \PY{n}{positive\PYZus{}rate}\PY{p}{)}
+         
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Print diagnostics results}
+         \PY{k}{def} \PY{n+nf}{print\PYZus{}diagnostic\PYZus{}results}\PY{p}{(}\PY{n}{results}\PY{p}{)}\PY{p}{:}
+             \PY{c+c1}{\PYZsh{} format all results to three decimal places}
+             \PY{n}{three\PYZus{}decimals} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZpc{}.3f}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{n}{v} \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n}{results}\PY{p}{]}
+             \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Diagnostic results}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  accuracy:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  sensitivity:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  specificity:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  positive likelyhood:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  negative likelyhood:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  false positive rate:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  false negative rate:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  positive predictive value:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{7}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  negative predicitve value:}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{three\PYZus{}decimals}\PY{p}{[}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+         
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Calculate weights from weights ratio:}
+         \PY{c+c1}{\PYZsh{} Set up class weighting to bias for sensiitivty vs. specificity}
+         \PY{c+c1}{\PYZsh{} Higher values increase sensitivity at the cost of specificity}
+         \PY{k}{def} \PY{n+nf}{calculate\PYZus{}class\PYZus{}weights}\PY{p}{(}\PY{n}{positive\PYZus{}class\PYZus{}weight\PYZus{}ratio}\PY{p}{)}\PY{p}{:}
+             \PY{n}{positive\PYZus{}weight} \PY{o}{=} \PY{p}{(} \PY{n}{positive\PYZus{}class\PYZus{}weight\PYZus{}ratio} \PY{o}{/} 
+                                \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{positive\PYZus{}class\PYZus{}weight\PYZus{}ratio}\PY{p}{)}\PY{p}{)}
+             
+             \PY{n}{negative\PYZus{}weight} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{positive\PYZus{}weight}
+             \PY{n}{class\PYZus{}weights} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+m+mi}{0}\PY{p}{:} \PY{n}{negative\PYZus{}weight}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{:} \PY{n}{positive\PYZus{}weight}\PY{p}{\PYZcb{}}
+             \PY{k}{return} \PY{p}{(}\PY{n}{class\PYZus{}weights}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{}\PYZpc{}\PYZpc{} Create results folder if needed}
+         \PY{c+c1}{\PYZsh{} (Not used in this demo)   }
+         \PY{c+c1}{\PYZsh{} OUTPUT\PYZus{}LOCATION = \PYZsq{}results\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} if not os.path.exists(OUTPUT\PYZus{}LOCATION):}
+         \PY{c+c1}{\PYZsh{}    os.makedirs(OUTPUT\PYZus{}LOCATION)}
+             
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Import data}
+         \PY{n}{url} \PY{o}{=} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{https://raw.githubusercontent.com/MichaelAllen1966/wordpress\PYZus{}blog}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+}
+                \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/master/jupyter\PYZus{}notebooks/stroke.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{df\PYZus{}stroke} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{url}\PY{p}{)}
+         \PY{n}{feat\PYZus{}labels} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{df\PYZus{}stroke}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}
+         \PY{n}{number\PYZus{}of\PYZus{}features} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{feat\PYZus{}labels}\PY{p}{)}
+         \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{df\PYZus{}stroke}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{df\PYZus{}stroke}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{values}
+         
+         \PY{c+c1}{\PYZsh{} Set different weights for pisitive and negative results in SVM is required}
+         \PY{c+c1}{\PYZsh{} This will adjust balance between sensitivity and specificity}
+         \PY{c+c1}{\PYZsh{} For equal weighting, set at 1}
+         \PY{n}{positive\PYZus{}class\PYZus{}weight\PYZus{}ratio} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{n}{class\PYZus{}weights} \PY{o}{=} \PY{n}{calculate\PYZus{}class\PYZus{}weights}\PY{p}{(}\PY{n}{positive\PYZus{}class\PYZus{}weight\PYZus{}ratio}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Set up strtified k\PYZhy{}fold}
+         \PY{n}{splits} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{skf} \PY{o}{=} \PY{n}{StratifiedKFold}\PY{p}{(}\PY{n}{n\PYZus{}splits} \PY{o}{=} \PY{n}{splits}\PY{p}{)}
+         \PY{n}{skf}\PY{o}{.}\PY{n}{get\PYZus{}n\PYZus{}splits}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Set up results dataframes}
+         \PY{n}{forest\PYZus{}results} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{splits}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+         \PY{n}{forest\PYZus{}importance} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{splits}\PY{p}{,} \PY{n}{number\PYZus{}of\PYZus{}features}\PY{p}{)}\PY{p}{)}
+         \PY{n}{svm\PYZus{}results\PYZus{}linear} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{splits}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+         \PY{n}{svm\PYZus{}results\PYZus{}rbf} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{splits}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+         \PY{n}{lr\PYZus{}results} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{splits}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nn\PYZus{}results} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{splits}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Loop through the k splits of training/test data}
+         \PY{n}{loop\PYZus{}count} \PY{o}{=} \PY{l+m+mi}{0}
+         
+         \PY{k}{for} \PY{n}{train\PYZus{}index}\PY{p}{,} \PY{n}{test\PYZus{}index} \PY{o+ow}{in} \PY{n}{skf}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:}
+             
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Split}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{loop\PYZus{}count} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{out of}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{splits}\PY{p}{)}
+         
+             \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{X}\PY{p}{[}\PY{n}{train\PYZus{}index}\PY{p}{]}\PY{p}{,} \PY{n}{X}\PY{p}{[}\PY{n}{test\PYZus{}index}\PY{p}{]}
+             \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{y}\PY{p}{[}\PY{n}{train\PYZus{}index}\PY{p}{]}\PY{p}{,} \PY{n}{y}\PY{p}{[}\PY{n}{test\PYZus{}index}\PY{p}{]}
+         
+             \PY{n}{sc} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} new Standard Scalar object}
+             \PY{n}{sc}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{)}
+             \PY{n}{X\PYZus{}train\PYZus{}std} \PY{o}{=} \PY{n}{sc}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{)}
+             \PY{n}{X\PYZus{}test\PYZus{}std} \PY{o}{=} \PY{n}{sc}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+             \PY{n}{combined\PYZus{}results} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Random forests}
+             \PY{n}{forest} \PY{o}{=} \PY{n}{RandomForestClassifier}\PY{p}{(}\PY{n}{n\PYZus{}estimators}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,} \PY{n}{n\PYZus{}jobs}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} 
+                                             \PY{n}{class\PYZus{}weight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{balanced}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{forest}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+             \PY{n}{forest\PYZus{}importance}\PY{p}{[}\PY{n}{loop\PYZus{}count}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{forest}\PY{o}{.}\PY{n}{feature\PYZus{}importances\PYZus{}}
+             \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{forest}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+             \PY{n}{test\PYZus{}results} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{vstack}\PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{diagnostic\PYZus{}performance} \PY{o}{=} \PY{p}{(}\PY{n}{calculate\PYZus{}diagnostic\PYZus{}performance}
+                                       \PY{p}{(}\PY{n}{test\PYZus{}results}\PY{o}{.}\PY{n}{values}\PY{p}{)}\PY{p}{)}
+             \PY{n}{forest\PYZus{}results}\PY{p}{[}\PY{n}{loop\PYZus{}count}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{diagnostic\PYZus{}performance}
+             \PY{n}{combined\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Forest}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y\PYZus{}pred}
+         
+             \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} SVM (Support Vector Machine) Linear}
+             \PY{n}{svm} \PY{o}{=} \PY{n}{SVC}\PY{p}{(}\PY{n}{kernel}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{linear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{C}\PY{o}{=}\PY{l+m+mf}{1.0}\PY{p}{,} \PY{n}{class\PYZus{}weight}\PY{o}{=}\PY{n}{class\PYZus{}weights}\PY{p}{)}
+             \PY{n}{svm}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train\PYZus{}std}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+             \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{svm}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test\PYZus{}std}\PY{p}{)}
+             \PY{n}{test\PYZus{}results} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{vstack}\PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{diagnostic\PYZus{}performance} \PY{o}{=} \PY{p}{(}\PY{n}{calculate\PYZus{}diagnostic\PYZus{}performance}
+                                       \PY{p}{(}\PY{n}{test\PYZus{}results}\PY{o}{.}\PY{n}{values}\PY{p}{)}\PY{p}{)}
+             \PY{n}{svm\PYZus{}results\PYZus{}linear}\PY{p}{[}\PY{n}{loop\PYZus{}count}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{diagnostic\PYZus{}performance}
+             \PY{n}{combined\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SVM\PYZus{}linear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y\PYZus{}pred}
+         
+             \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} SVM (Support Vector Machine) RBF}
+             \PY{n}{svm} \PY{o}{=} \PY{n}{SVC}\PY{p}{(}\PY{n}{kernel}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rbf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{C}\PY{o}{=}\PY{l+m+mf}{1.0}\PY{p}{)}
+             \PY{n}{svm}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train\PYZus{}std}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+             \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{svm}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test\PYZus{}std}\PY{p}{)}
+             \PY{n}{test\PYZus{}results} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{vstack}\PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{diagnostic\PYZus{}performance} \PY{o}{=} \PY{p}{(}\PY{n}{calculate\PYZus{}diagnostic\PYZus{}performance}
+                                       \PY{p}{(}\PY{n}{test\PYZus{}results}\PY{o}{.}\PY{n}{values}\PY{p}{)}\PY{p}{)}
+             \PY{n}{svm\PYZus{}results\PYZus{}rbf}\PY{p}{[}\PY{n}{loop\PYZus{}count}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{diagnostic\PYZus{}performance}
+             \PY{n}{combined\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SVM\PYZus{}rbf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y\PYZus{}pred}
+         
+             \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Logistic Regression}
+             \PY{n}{lr} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}\PY{n}{C}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{class\PYZus{}weight}\PY{o}{=}\PY{n}{class\PYZus{}weights}\PY{p}{)}
+             \PY{n}{lr}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train\PYZus{}std}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+             \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{lr}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test\PYZus{}std}\PY{p}{)}
+             \PY{n}{test\PYZus{}results} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{vstack}\PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{diagnostic\PYZus{}performance} \PY{o}{=} \PY{p}{(}\PY{n}{calculate\PYZus{}diagnostic\PYZus{}performance}
+                                       \PY{p}{(}\PY{n}{test\PYZus{}results}\PY{o}{.}\PY{n}{values}\PY{p}{)}\PY{p}{)}
+             \PY{n}{lr\PYZus{}results}\PY{p}{[}\PY{n}{loop\PYZus{}count}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{diagnostic\PYZus{}performance}
+             \PY{n}{combined\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LR}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y\PYZus{}pred}
+         
+             \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Neural Network}
+             \PY{n}{clf} \PY{o}{=} \PY{n}{MLPClassifier}\PY{p}{(}\PY{n}{solver}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{lbfgs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}8}\PY{p}{,} \PY{n}{hidden\PYZus{}layer\PYZus{}sizes}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}
+                                 \PY{n}{max\PYZus{}iter}\PY{o}{=}\PY{l+m+mi}{100000}\PY{p}{,} \PY{n}{shuffle}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{learning\PYZus{}rate\PYZus{}init}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{,}
+                                 \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{constant}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{tol}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}7}\PY{p}{)}
+             \PY{n}{clf}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train\PYZus{}std}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+             \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{clf}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test\PYZus{}std}\PY{p}{)}
+             \PY{n}{test\PYZus{}results} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{vstack}\PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{diagnostic\PYZus{}performance} \PY{o}{=} \PY{p}{(}\PY{n}{calculate\PYZus{}diagnostic\PYZus{}performance}
+                                       \PY{p}{(}\PY{n}{test\PYZus{}results}\PY{o}{.}\PY{n}{values}\PY{p}{)}\PY{p}{)}
+             \PY{n}{nn\PYZus{}results}\PY{p}{[}\PY{n}{loop\PYZus{}count}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{diagnostic\PYZus{}performance}
+             \PY{n}{combined\PYZus{}results}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NN}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y\PYZus{}pred}
+             
+             \PY{c+c1}{\PYZsh{} Increment loop count}
+             \PY{n}{loop\PYZus{}count} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Transfer results to Pandas arrays}
+         \PY{n}{results\PYZus{}summary} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{results\PYZus{}column\PYZus{}names} \PY{o}{=} \PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sensitivity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{specificity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positive likelihood}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negative likelihood}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{false positive rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{false negative rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positive predictive value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{negative predictive value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                                  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{positive rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{forest\PYZus{}results\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{forest\PYZus{}results}\PY{p}{)}
+         \PY{n}{forest\PYZus{}results\PYZus{}df}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{results\PYZus{}column\PYZus{}names}
+         \PY{n}{forest\PYZus{}importance\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{forest\PYZus{}importance}\PY{p}{)}
+         \PY{n}{forest\PYZus{}importance\PYZus{}df}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{feat\PYZus{}labels}
+         \PY{n}{results\PYZus{}summary}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Forest}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{forest\PYZus{}results\PYZus{}df}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{svm\PYZus{}results\PYZus{}lin\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{svm\PYZus{}results\PYZus{}linear}\PY{p}{)}
+         \PY{n}{svm\PYZus{}results\PYZus{}lin\PYZus{}df}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{results\PYZus{}column\PYZus{}names}
+         \PY{n}{results\PYZus{}summary}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SVM\PYZus{}lin}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{svm\PYZus{}results\PYZus{}lin\PYZus{}df}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{svm\PYZus{}results\PYZus{}rbf\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{svm\PYZus{}results\PYZus{}rbf}\PY{p}{)}
+         \PY{n}{svm\PYZus{}results\PYZus{}rbf\PYZus{}df}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{results\PYZus{}column\PYZus{}names}
+         \PY{n}{results\PYZus{}summary}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SVM\PYZus{}rbf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{svm\PYZus{}results\PYZus{}rbf\PYZus{}df}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{lr\PYZus{}results\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{lr\PYZus{}results}\PY{p}{)}
+         \PY{n}{lr\PYZus{}results\PYZus{}df}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{results\PYZus{}column\PYZus{}names}
+         \PY{n}{results\PYZus{}summary}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LR}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{lr\PYZus{}results\PYZus{}df}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{nn\PYZus{}results\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{nn\PYZus{}results}\PY{p}{)}
+         \PY{n}{nn\PYZus{}results\PYZus{}df}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{results\PYZus{}column\PYZus{}names}
+         \PY{n}{results\PYZus{}summary}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Neural}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{nn\PYZus{}results\PYZus{}df}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Print summary results}
+         \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Results Summary:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{results\PYZus{}summary}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} \PYZpc{}\PYZpc{} Save files}
+         \PY{c+c1}{\PYZsh{} NOT USED IN THIS DEMO}
+         \PY{c+c1}{\PYZsh{} forest\PYZus{}results\PYZus{}df.to\PYZus{}csv(\PYZsq{}results/forest\PYZus{}results.csv\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} forest\PYZus{}importance\PYZus{}df.to\PYZus{}csv(\PYZsq{}results/forest\PYZus{}importance.csv\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} svm\PYZus{}results\PYZus{}lin\PYZus{}df.to\PYZus{}csv(\PYZsq{}results/svm\PYZus{}lin\PYZus{}results.csv\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} svm\PYZus{}results\PYZus{}rbf\PYZus{}df.to\PYZus{}csv(\PYZsq{}results/svm\PYZus{}rbf\PYZus{}results.csv\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} lr\PYZus{}results\PYZus{}df.to\PYZus{}csv(\PYZsq{}results/logistic\PYZus{}results.csv\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} nn\PYZus{}results\PYZus{}df.to\PYZus{}csv(\PYZsq{}results/neural\PYZus{}network\PYZus{}results.csv\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} results\PYZus{}summary.to\PYZus{}csv(\PYZsq{}results/results\PYZus{}summary.csv\PYZsq{})}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Split 1 out of 10
+Split 2 out of 10
+Split 3 out of 10
+Split 4 out of 10
+Split 5 out of 10
+Split 6 out of 10
+Split 7 out of 10
+Split 8 out of 10
+Split 9 out of 10
+Split 10 out of 10
+
+Results Summary:
+                             Forest   SVM\_lin   SVM\_rbf        LR    Neural
+accuracy                   0.851946  0.839995  0.843081  0.839610  0.801859
+sensitivity                0.727978  0.767511  0.741951  0.753473  0.702353
+specificity                0.905567  0.871350  0.886804  0.876865  0.844867
+positive likelihood        8.799893  7.396559  7.384775  7.390298  4.909178
+negative likelihood        0.297522  0.263269  0.287613  0.276478  0.349459
+false positive rate        0.094433  0.128650  0.113196  0.123135  0.155133
+false negative rate        0.272022  0.232489  0.258049  0.246527  0.297647
+positive predictive value  0.775919  0.731363  0.747641  0.737093  0.669270
+negative predictive value  0.887152  0.898619  0.890479  0.894471  0.869677
+positive rate              0.285678  0.321505  0.302999  0.313414  0.320310
+
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
