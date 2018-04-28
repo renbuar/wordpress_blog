@@ -1,43 +1,4 @@
 
-# coding: utf-8
-
-# # Adding standard diagnostic performance metrics to a ml diagnosis model
-# 
-# Here we will repeat the logistic regression model on cancer diagnosis, but add in commonly used measures of clinical diagnostic test performance. These may be used when the predicted outcome may be clasified as true or false. 
-# 
-# In this example we'll break down our code into functions. This is good practice for longer programmes. The functions are usually presented in alphabetical order. The main code comes after all functions have been defined. This makes the flow of the programme, as defined in the main code (not by the order of the functions), easy to follow. As a gernal rule functions should be named by their action. Names should adequatetly describe everything the function does (the best functional programming has functions that do one thing).
-# 
-# The diagnostic measures covered are:
-# 
-# 1) accuracy: proportion of test results that are correct    
-# 
-# 2) sensitivity: proportion of true +ve identified
-# 
-# 3) specificity: proportion of true -ve identified
-# 
-# 4) positive likelihood: increased probability of true +ve if test +ve
-# 
-# 5) negative likelihood: reduced probability of true +ve if test -ve
-# 
-# 6) false positive rate: proportion of false +ves in true -ve patients
-# 
-# 7) false negative rate:  proportion of false -ves in true +ve patients
-# 
-# 8) positive predictive value: chance of true +ve if test +ve
-# 
-# 9) negative predictive value: chance of true -ve if test -ve
-# 
-# 10) precision = positive predictive value 
-# 
-# 11) recall = sensitivity
-# 
-# 12) f1 = (2 * precision * recall) / (precision + recall)
-#     
-# Let's look at the code, and run it:
-
-# In[8]:
-
-
 # import required modules
 
 from sklearn import datasets

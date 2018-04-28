@@ -1,4 +1,32 @@
 
+Skip to content
+This repository
+
+    Pull requests
+    Issues
+    Marketplace
+    Explore
+
+    @MichaelAllen1966
+
+1
+1
+
+    0
+
+MichaelAllen1966/wordpress_blog
+Code
+Issues 0
+Pull requests 0
+Projects 0
+Wiki
+Insights
+Settings
+wordpress_blog/py_files/0066_logistic_regression.py
+c1be6d6 a day ago
+@MichaelAllen1966 MichaelAllen1966 Added content
+114 lines (74 sloc) 3.8 KB
+
 # coding: utf-8
 
 # # Using logistic regression to diagnose breast cancer
@@ -111,3 +139,19 @@ print (prediction.head(20))
 
 
 # There we have our first machine learning model!
+
+    © 2018 GitHub, Inc.
+    Terms
+    Privacy
+    Security
+    Status
+    Help
+
+    Contact GitHub
+    API
+    Training
+    Shop
+    Blog
+    About
+
+Press h to open a hovercard with more details.
