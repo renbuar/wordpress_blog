@@ -1,65 +1,143 @@
-import numpy as np
+# See https://docs.scipy.org/doc/scipy/reference/stats.html for dists
+
+
+
 import matplotlib.pyplot as plt
-from matplotlib import cm
-from sklearn.cross_validation import train_test_split
+import scipy
+import scipy.stats
+import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
+import pandas as pd
+
+# For full list of possible distributions to tets see 
+# https://docs.scipy.org/doc/scipy-0.14.0/reference/stats.html#module-scipy.stats
 
 
-def apply_PCA_all_components(X):
-    from sklearn.decomposition import PCA
-    pca = PCA(n_components = None)
-    X_pca = pca.fit_transform(X_train_std)
-    
-    return pca, X_pca
-    
-#%% Load data
-from sklearn import datasets
-data_set = datasets.load_breast_cancer()
-X=data_set.data
-y=data_set.target
 
-# Split into training and tets sets
-X_train,X_test,y_train,y_test = (
-        train_test_split(X,y,test_size=0.3, random_state=0))
+size = 1000
 
-#%% Normalise data
+# creating the dummy sample (using beta distribution)
+y = np.random.lognormal(3, 1, size)
+
+y = pd.read_csv('my_data.csv').values
+
+x = scipy.arange(len(y))
+
+
+
+#y = np.linspace(-10,10,10)
+
+
+
+
+dist_names = ['beta',
+              'expon',
+              'gamma',
+              'lognorm',
+              'norm',
+              'pearson3',
+              'triang',
+              'uniform',
+              'weibull_min', 
+              'weibull_max']
+
+
+
+p_values = []
+chi_square = []
+percentile_bins = np.linspace(0,100,51)
+
 sc=StandardScaler() 
-sc.fit(X_train)
-X_train_std=sc.transform(X_train)
-X_test_std=sc.transform(X_test)
+yy = y.reshape (-1,1)
+sc.fit(yy)
+y_std =sc.transform(yy)
+y_std = y_std.flatten()
 
-# Apply pca, accesing all components
-pca = PCA(n_components = None)
-X_train_pca=pca.fit_transform(X_train_std)
+percentile_cutoffs = np.percentile(y_std, percentile_bins)
 
-explained_variance = pca.explained_variance_ratio_
-explained_variance_cum_sum = np.cumsum(explained_variance)
+for distribution in dist_names:
+    dist = getattr(scipy.stats, distribution)
+    param = dist.fit(y_std)
+    p = scipy.stats.kstest(y_std, distribution, args=param)[1]
+    p = int((p*1e4)+0.5)/1e4
+    p_values.append(p)
+    # Get expected counts in percentile bins
+    cdf_fitted = dist.cdf(percentile_cutoffs, *param[:-2], loc=param[-2], 
+                          scale=param[-1])
+    
+    expected_frequency = []
+    for bin in range(len(percentile_bins)-1):
+        expected_cdf_area = cdf_fitted[bin+1] - cdf_fitted[bin]
+        expected_frequency.append(expected_cdf_area)
+    # calculate sum of squares of observed - expected
+    expected_frequency = np.array(expected_frequency)
+    ss = sum (((expected_frequency - 0.02) ** 2) / 0.02)
+    chi_square.append(ss)
+        
+    
+    
+print ('\nDistributions sorted by goodness of fit:')
+print ('----------------------------------------')
+results = pd.DataFrame()
+results['Distribution'] = dist_names
+results['chi_square'] = chi_square
+results['p_value'] = p_values
+results.sort_values(['chi_square'], inplace=True)
 
-# Plot principle components explained variance
+print (results)
 
-fig = plt.figure(figsize=(5,5))
-ax = fig.add_subplot(111)
-x = np.arange(1, len(explained_variance)+1)
-ax.plot(x, explained_variance, label = 'Inidividual contribution')
-ax.plot(x, explained_variance_cum_sum, label = 'Cumulative contribution')
-ax.set_xlabel('Number of principal components')
-ax.set_ylabel('Proportion of variance explained')
-ax.legend()
-ax.grid()
+# Plot best distributions
+
+number_of_bins = 100
+bin_cutoffs = np.linspace(np.percentile(y,0), np.percentile(y,99),number_of_bins)
+
+
+number_distributions_to_plot = 1
+
+print ('\nBest distributions:')
+print ('-------------------')
+
+h = plt.hist(y, bins = bin_cutoffs, color='0.75')
+
+dist_names = results['Distribution'].iloc[0:number_distributions_to_plot]
+parameters = []
+
+
+for dist_name in dist_names:
+    dist = getattr(scipy.stats, dist_name)
+    starting_loc = np.mean(y)
+
+    if len(x) > 30000000:
+        np.random.shuffle(y)
+        sample = y[0:100]
+        starting_loc = dist.fit(sample)[0]
+    param = dist.fit(y, starting_loc)
+    parameters.append(param)
+    pdf_fitted = dist.pdf(x, *param[:-2], loc=param[-2], scale=param[-1])
+    scale_pdf = np.trapz (h[0], h[1][:-1]) / np.trapz (pdf_fitted, x)
+    pdf_fitted *= scale_pdf
+    plt.plot(pdf_fitted, label=dist_name)
+    plt.xlim(0,np.percentile(y,98))
+
+
+plt.legend()
 plt.show()
 
-# Plot covariance matrix of original data
-cov_original = np.cov(X_train_std.T)
-plt.imshow(cov_original, interpolation='nearest', cmap=cm.Greys)
-plt.colorbar()
-plt.title('Covariance of orginal features')
-plt.show()
+dist_parameters = pd.DataFrame()
+dist_parameters['Distribution'] = (
+        results['Distribution'].iloc[0:number_distributions_to_plot])
+dist_parameters['Distribution parameters'] = parameters
 
-# Plot covariance of principal components
-cov_pca = np.cov(X_train_pca.T)
-plt.imshow(cov_pca, interpolation='nearest', cmap=cm.Greys)
-plt.colorbar()
-plt.title('Covariance of principal components')
+print ('\nDistribution parameters:')
+print ('------------------------')
 
-plt.show()
+for index, row in dist_parameters.iterrows():
+    print ('\nDistribution:', row[0])
+    print ('Parameters:', row[1] )
+    
+
+
+
+    
+    
+        
