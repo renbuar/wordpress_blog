@@ -26,7 +26,13 @@ from sklearn import datasets
 data_set = datasets.load_breast_cancer()
 y=data_set.data[:,0]
 
-
+sc=StandardScaler() 
+yy = y.reshape (-1,1)
+sc.fit(yy)
+y_std =sc.transform(yy)
+y_std = y_std.flatten()
+y_std
+del yy
 
 
 
@@ -52,47 +58,56 @@ dist_names = ['beta',
 
 
 
-p_values = []
+# Set up empty lists to stroe results
 chi_square = []
+p_values = []
+
+# Set up 50 bins for chi-square test
+# Observed data will be approximately evenly distrubuted aross all bins
 percentile_bins = np.linspace(0,100,51)
-
-sc=StandardScaler() 
-yy = y.reshape (-1,1)
-sc.fit(yy)
-y_std =sc.transform(yy)
-y_std = y_std.flatten()
-
 percentile_cutoffs = np.percentile(y_std, percentile_bins)
+observed_frequency, bins = (np.histogram(y_std, bins=percentile_cutoffs))
+observed_frequency_cumsum = np.cumsum(observed_frequency)
+
+# Loop through candidate distributions
 
 for distribution in dist_names:
+    # Set up distribution and get fitted distribution parameters
     dist = getattr(scipy.stats, distribution)
     param = dist.fit(y_std)
+    
+    # Obtain the KS test P statistic, round it to 5 decimal places
     p = scipy.stats.kstest(y_std, distribution, args=param)[1]
-    p = int((p*1e4)+0.5)/1e4
-    p_values.append(p)
+    p = np.around(p, 5)
+    p_values.append(p)    
+    
     # Get expected counts in percentile bins
+    # This is based on a 'cumulative distrubution function' (cdf)
     cdf_fitted = dist.cdf(percentile_cutoffs, *param[:-2], loc=param[-2], 
                           scale=param[-1])
-    
     expected_frequency = []
     for bin in range(len(percentile_bins)-1):
         expected_cdf_area = cdf_fitted[bin+1] - cdf_fitted[bin]
         expected_frequency.append(expected_cdf_area)
-    # calculate sum of squares of observed - expected
-    expected_frequency = np.array(expected_frequency)
-    ss = sum (((expected_frequency - 0.02) ** 2) / 0.02)
-    chi_square.append(ss)
         
     
-    
-print ('\nDistributions sorted by goodness of fit:')
-print ('----------------------------------------')
+    # calculate chi-squared 
+    expected_frequency = np.array(expected_frequency)
+    ss = sum (((expected_frequency - observed_frequency) ** 2) / observed_frequency)
+    chi_square.append(ss)
+        
+# Collate results and sort by goodness of fit (best at top)
+
 results = pd.DataFrame()
 results['Distribution'] = dist_names
 results['chi_square'] = chi_square
 results['p_value'] = p_values
 results.sort_values(['chi_square'], inplace=True)
+    
+# Report results
 
+print ('\nDistributions sorted by goodness of fit:')
+print ('----------------------------------------')
 print (results)
 
 # Plot best distributions

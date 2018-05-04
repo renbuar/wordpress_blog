@@ -11,7 +11,7 @@
 # 
 # As usual we will start by loading general modules used, and load our data (selecting the first column for our 'y', the data to be fitted).
 
-# In[12]:
+# In[7]:
 
 
 import pandas as pd
@@ -30,13 +30,14 @@ y=data_set.data[:,0]
 # Create an index array (x) for data
 
 x = np.arange(len(y))
+size = len(y)
 
 
 # ## Visualise the data, and show descriptive summary
 # 
-# Before we do any fitting of distributions, it's always good to do a simple visualisation of the data, and show desriptive statistics. We may, for example, decide to perform some outlier removal if we thinnk that necessary (if there appear to be data points that don't belong to the rest of the population).
+# Before we do any fitting of distributions, it's always good to do a simple visualisation of the data, and show desriptive statistics. We may, for example, decide to perform some outlier removal if we think that necessary (if there appear to be data points that don't belong to the rest of the population).
 
-# In[13]:
+# In[8]:
 
 
 plt.hist(y)
@@ -45,7 +46,7 @@ plt.show()
 
 # If we put the data in a Pandas Dataframe we can use the Pandas secribe method to show a summary.
 
-# In[14]:
+# In[9]:
 
 
 y_df = pd.DataFrame(y, columns=['Data'])
@@ -68,7 +69,7 @@ y_df.describe()
 
 # Let's first standardise the data using sklearn's StandardScaler:
 
-# In[27]:
+# In[10]:
 
 
 sc=StandardScaler() 
@@ -84,7 +85,7 @@ del yy
 # 
 # Python may report warnings while running the distributions. 
 
-# In[37]:
+# In[11]:
 
 
 # Set list of distributions to test
@@ -116,8 +117,8 @@ p_values = []
 # Observed data will be approximately evenly distrubuted aross all bins
 percentile_bins = np.linspace(0,100,51)
 percentile_cutoffs = np.percentile(y_std, percentile_bins)
-observed_frequency, bins = (np.histogram(y_std, bins=percentile_cutoffs)/
-                            sum(y))
+observed_frequency, bins = (np.histogram(y_std, bins=percentile_cutoffs))
+cum_observed_frequency = np.cumsum(observed_frequency)
 
 # Loop through candidate distributions
 
@@ -141,8 +142,9 @@ for distribution in dist_names:
         expected_frequency.append(expected_cdf_area)
     
     # calculate chi-squared
-    expected_frequency = np.array(expected_frequency)
-    ss = sum (((expected_frequency - observed_frequency) ** 2) / observed_frequency)
+    expected_frequency = np.array(expected_frequency) * size
+    cum_expected_frequency = np.cumsum(expected_frequency)
+    ss = sum (((cum_expected_frequency - cum_observed_frequency) ** 2) / cum_observed_frequency)
     chi_square.append(ss)
         
 # Collate results and sort by goodness of fit (best at top)
@@ -162,7 +164,7 @@ print (results)
 
 # We will now take the top three fits, plot the fit and return the sklearn parameters. This time we will fit to the raw data rather than the standardised data.
 
-# In[39]:
+# In[12]:
 
 
 # Divide the observed data into 100 bins for plotting (this can be changed)
