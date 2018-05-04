@@ -61,6 +61,8 @@ y_df.describe()
 # 
 # chi-squared = sum ((observed - predicted) ** 2) / predicted)
 # 
+# For the observed and predicted we will use the cumulative sum of observed and predicted frequency across the bin range used.
+# 
 # The lower the chi-squared value the better the fit.
 # 
 # The Kolmogorov-Smirnov test assumes that data has been standardised: that is the mean is subtracted from all data (so the data becomes centred around zero), and that the results values are divided by the standard deviation (so all data becomes expressed as the number of standard deviations above or below the mean). A value of greater than 0.05 means that the fitted distribution is not significantly different to the observed distribution of the data.
