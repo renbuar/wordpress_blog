@@ -11,7 +11,7 @@
 # 
 # As usual we will start by loading general modules used, and load our data (selecting the first column for our 'y', the data to be fitted).
 
-# In[7]:
+# In[1]:
 
 
 import pandas as pd
@@ -37,7 +37,7 @@ size = len(y)
 # 
 # Before we do any fitting of distributions, it's always good to do a simple visualisation of the data, and show desriptive statistics. We may, for example, decide to perform some outlier removal if we think that necessary (if there appear to be data points that don't belong to the rest of the population).
 
-# In[8]:
+# In[2]:
 
 
 plt.hist(y)
@@ -46,7 +46,7 @@ plt.show()
 
 # If we put the data in a Pandas Dataframe we can use the Pandas secribe method to show a summary.
 
-# In[9]:
+# In[3]:
 
 
 y_df = pd.DataFrame(y, columns=['Data'])
@@ -71,7 +71,7 @@ y_df.describe()
 
 # Let's first standardise the data using sklearn's StandardScaler:
 
-# In[10]:
+# In[4]:
 
 
 sc=StandardScaler() 
@@ -87,7 +87,7 @@ del yy
 # 
 # Python may report warnings while running the distributions. 
 
-# In[11]:
+# In[5]:
 
 
 # Set list of distributions to test
@@ -166,7 +166,7 @@ print (results)
 
 # We will now take the top three fits, plot the fit and return the sklearn parameters. This time we will fit to the raw data rather than the standardised data.
 
-# In[12]:
+# In[6]:
 
 
 # Divide the observed data into 100 bins for plotting (this can be changed)
@@ -221,4 +221,79 @@ print ('------------------------')
 for index, row in dist_parameters.iterrows():
     print ('\nDistribution:', row[0])
     print ('Parameters:', row[1] )
+
+
+# ## qq and pp plots
+# 
+# qq and pp plots are two ways of showing how well a distribution fits data, other than plotting the distribution on top of a historgram of values (as used above). 
+# 
+# Our intention here is not to describe the basis of the plots, but to show how to plot them in Python. In very basic terms they both describe how observed data is distributed compared with a theoretical distribution. If the fit is perfect then the data will aappear as a perfect diagonal line where the x and y values are the same (for standardised data, as we use here).
+# 
+# For more info on the plots see:
+# 
+# https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot
+# https://en.wikipedia.org/wiki/P%E2%80%93P_plot
+# 
+# So he is the code for the plots.
+
+# In[8]:
+
+
+## qq and pp plots
+    
+data = y_std.copy()
+data.sort()
+
+# Loop through selected distributions (as previously selected)
+
+for distribution in dist_names:
+    # Set up distribution
+    dist = getattr(scipy.stats, distribution)
+    param = dist.fit(y_std)
+    
+    # Get random numbers from distribution
+    norm = dist.rvs(*param[0:-2],loc=param[-2], scale=param[-1],size = size)
+    norm.sort()
+    
+    # Create figure
+    fig = plt.figure(figsize=(8,5)) 
+    
+    # qq plot
+    ax1 = fig.add_subplot(121) # Grid of 2x2, this is suplot 1
+    ax1.plot(norm,data,"o")
+    min_value = np.floor(min(min(norm),min(data)))
+    max_value = np.ceil(max(max(norm),max(data)))
+    ax1.plot([min_value,max_value],[min_value,max_value],'r--')
+    ax1.set_xlim(min_value,max_value)
+    ax1.set_xlabel('Theoretical quantiles')
+    ax1.set_ylabel('Observed quantiles')
+    title = 'qq plot for ' + distribution +' distribution'
+    ax1.set_title(title)
+    
+    # pp plot
+    ax2 = fig.add_subplot(122)
+    
+    # Calculate cumulative distributions
+    bins = np.percentile(norm,range(0,101))
+    data_counts, bins = np.histogram(data,bins)
+    norm_counts, bins = np.histogram(norm,bins)
+    cum_data = np.cumsum(data_counts)
+    cum_norm = np.cumsum(norm_counts)
+    cum_data = cum_data / max(cum_data)
+    cum_norm = cum_norm / max(cum_norm)
+    
+    # plot
+    ax2.plot(cum_norm,cum_data,"o")
+    min_value = np.floor(min(min(cum_norm),min(cum_data)))
+    max_value = np.ceil(max(max(cum_norm),max(cum_data)))
+    ax2.plot([min_value,max_value],[min_value,max_value],'r--')
+    ax2.set_xlim(min_value,max_value)
+    ax2.set_xlabel('Theoretical cumulative distribution')
+    ax2.set_ylabel('Observed cumulative distribution')
+    title = 'pp plot for ' + distribution +' distribution'
+    ax2.set_title(title)
+    
+    # Display plot    
+    plt.tight_layout(pad=4)
+    plt.show()
 
